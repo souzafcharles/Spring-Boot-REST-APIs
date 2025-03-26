@@ -29,7 +29,7 @@
 
 # Development Sections:
 - [X] Section 01: [First Steps in Spring Boot with Java 21](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_04/restapi)
-- [ ] Section 02: Understanding Path Params and Exception Handling in Spring Boot
+- [X] Section 02: Understanding Path Params and Exception Handling in Spring Boot
 - [ ] Section 03: How to Use HTTP Verbs in Spring Boot
 - [ ] Section 04: Spring Data JPA and API Integration with MySQL
 - [ ] Section 05: Working with Logs in Spring Boot
