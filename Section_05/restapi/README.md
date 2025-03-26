@@ -30,185 +30,146 @@
 
 ---
 
-# Requirements for `Person` Entity Class
+## Requirements for `Greeting` Record Class:
 
-## **Entity Class Design**
+- **Record Definition:**
+    - Define the `Greeting` class as a record to encapsulate immutable data with two fields: `id` and `content`.
 
-- **Purpose:** The `Person` entity class is designed to represent personal data and is serializable for use in a
-  distributed system context.
+- **Attributes:**
+    - The `id` attribute should be of type `Long` to represent a unique identifier.
+    - The `content` attribute should be of type `String` to store message content.
 
-## **Attributes and Annotations**
-
-- Define the following attributes:
-    - `id`: Represents the unique identifier for the `Person` entity.
-    - `firstName`: Represents the first name of the person.
-    - `lastName`: Represents the last name of the person.
-    - `address`: Represents the address of the person.
-    - `gender`: Represents the gender of the person.
-
-## **Constructors**
-
-- Implement the following constructors:
-    - A **no-argument constructor** to satisfy the requirements for JavaBeans.
-    - A parameterised constructor may be added for convenience (e.g.,
-      `public Person(Long id, String firstName, String lastName)`), though it is not required.
-
-## **Accessors and Mutators**
-
-- Implement `getters` and `setters` for all attributes to allow controlled access and updates to entity data:
-    - `public Long getId()` and `public void setId(Long id)`
-    - `public String getFirstName()` and `public void setFirstName(String firstName)`
-    - `public String getLastName()` and `public void setLastName(String lastName)`
-    - `public String getAddress()` and `public void setAddress(String address)`
-    - `public String getGender()` and `public void setGender(String gender)`
-
-## **Equals and HashCode**
-
-- **`equals()` Method:**
-    - Override the `equals()` method to compare instances of the `Person` class based on the `id` attribute:
-        - Example: `return Objects.equals(id, person.id);`
-- **`hashCode()` Method:**
-    - Override the `hashCode()` method to generate a hash code for a `Person` object using the `id` attribute:
-        - Example: `return Objects.hashCode(id);`
-
-## **Serializable Interface**
-
-- **Implement the Serializable Interface:**
-    - The `Person` class implements `Serializable` to support object serialisation for scenarios such as transferring
-      objects between systems.
-
-## **Documentation and Convention**
-
-- Follow best practices in naming conventions, and ensure that the serial version UID (`serialVersionUID`) is included:
-    - Example: `private static final long serialVersionUID = 1L;`
+- **Automatic Methods:**
+    - Leverage the record feature to automatically generate `getters` for `id` and `content`.
 
 ---
 
-# Requirements for `PersonService` Class
+## Requirements for `GreetingController` Class:
 
-## **Purpose**
+- **Controller Layer Definition:**
+    - Annotate the class with `@RestController` to designate it as a controller that handles RESTful requests.
 
-- The `PersonService` class is a service layer component designed to encapsulate the business logic for managing
-  `Person` entities. It facilitates the retrieval, creation, updating, and deletion of `Person` records.
+- **Endpoint Mapping:**
+    - Define an endpoint `/greeting` to handle HTTP GET requests using the `@RequestMapping` annotation.
 
-## **Service Layer Responsibilities**
+- **Request Parameters:**
+    - Accept an optional query parameter `name` with a default value of `"World"` using `@RequestParam`.
 
-- Serve as an intermediary between the controller layer and data layer.
-- Implement methods to manage and manipulate `Person` data.
-
-## **Attributes**
-
-- `AtomicLong counter`: Used for generating unique IDs for `Person` instances in the absence of a persistent database.
-- `Logger logger`: Utilised for logging actions performed by the service.
-
-## **Methods**
-
-1. **`findAll()`**
-    - **Purpose:** Retrieve a list of all `Person` records.
-    - **Return Type:** `List<Person>`
-    - **Implementation:** Create mock `Person` objects for demonstration purposes.
-
-2. **`findById(String id)`**
-    - **Purpose:** Retrieve a single `Person` record by its identifier.
-    - **Return Type:** `Person`
-    - **Implementation:** Create and return a mock `Person` object.
-
-3. **`create(Person person)`**
-    - **Purpose:** Add a new `Person` record to the system.
-    - **Return Type:** `Person`
-    - **Implementation:** Log the action and return the received `Person` instance.
-
-4. **`update(Person person)`**
-    - **Purpose:** Update an existing `Person` record.
-    - **Return Type:** `Person`
-    - **Implementation:** Log the action and return the updated `Person` instance.
-
-5. **`delete(String id)`**
-    - **Purpose:** Remove a `Person` record by its identifier.
-    - **Return Type:** `void`
-    - **Implementation:** Log the deletion operation.
-
-6. **`mockPerson(int i)` (Private Helper Method)**
-    - **Purpose:** Generate mock `Person` instances for testing or demonstration purposes.
-    - **Return Type:** `Person`
-    - **Implementation:** Populate and return a `Person` object with predefined attributes.
-
-## **Logging**
-
-- Use the `Logger` instance to log all operations performed by the service for debugging and monitoring purposes.
+- **Response Construction:**
+    - Use an `AtomicLong` to generate a unique identifier for each `Greeting` instance.
+    - Return a `Greeting` instance with the `id` and a formatted message: `"Hello, [name]!"`.
 
 ---
 
-# Requirements for `PersonController` Class
+## Requirements for `MathController` Class:
 
-## **Purpose**
+- **Controller Layer Definition:**
+    - Annotate the class with `@RestController` to define it as a RESTful controller.
+    - Use `@RequestMapping("/math")` at the class level to establish a base URL for all endpoints.
 
-- The `PersonController` class is a REST controller responsible for handling HTTP requests related to `Person` entities.
-  It provides endpoints for CRUD operations.
+- **Service Dependency:**
+    - Instantiate a `SimpleMath` object to perform mathematical operations.
 
-## **Controller Layer Responsibilities**
+- **Endpoint Definitions:**
+    - **Sum Operation:**
+        - Endpoint: `/math/sum/{numberOne}/{numberTwo}`.
+        - Use `@RequestMapping` to map the `sum` method to handle HTTP requests.
+        - Accept two path variables: `numberOne` and `numberTwo`.
+        - Validate that both variables are numeric using `NumberConverter.isNumeric`.
+        - Throw `UnsupportedMathOperationException` if validation fails.
+        - Perform the sum operation with `math.sum`.
 
-- Map incoming HTTP requests to appropriate service layer methods.
-- Handle RESTful operations for managing `Person` data.
+    - **Subtraction Operation:**
+        - Endpoint: `/math/subtraction/{numberOne}/{numberTwo}`.
+        - Similar setup and validation as the `sum` method.
+        - Perform subtraction with `math.subtraction`.
 
-## **Annotations**
+    - **Multiplication Operation:**
+        - Endpoint: `/math/multiplication/{numberOne}/{numberTwo}`.
+        - Similar setup and validation as the `sum` method.
+        - Perform multiplication with `math.multiplication`.
 
-- Annotate the class with `@RestController` to define it as a RESTful web service.
-- Use `@RequestMapping("/person")` at the class level to map requests to the base URL `/person`.
+    - **Division Operation:**
+        - Endpoint: `/math/division/{numberOne}/{numberTwo}`.
+        - Similar setup and validation as the `sum` method.
+        - Perform division with `math.division`.
 
-## **Endpoints**
+    - **Mean Operation:**
+        - Endpoint: `/math/mean/{numberOne}/{numberTwo}`.
+        - Similar setup and validation as the `sum` method.
+        - Perform mean calculation with `math.mean`.
 
-1. **`GET /person`**
-    - **Method:** `findAll()`
-    - **Purpose:** Retrieve a list of all `Person` records.
-    - **Consumes:** None
-    - **Produces:** `application/json`
-    - **Mapped Annotation:** `@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)`
+    - **Square Root Operation:**
+        - Endpoint: `/math/squareroot/{number}`.
+        - Accept a single path variable `number`.
+        - Validate the variable is numeric using `NumberConverter.isNumeric`.
+        - Throw `UnsupportedMathOperationException` if validation fails.
+        - Perform square root calculation with `math.squareRoot`.
 
-2. **`GET /person/{id}`**
-    - **Method:** `findById(String id)`
-    - **Purpose:** Retrieve a single `Person` record by its identifier.
-    - **Consumes:** None
-    - **Produces:** `application/json`
-    - **Mapped Annotation:**
-      `@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)`
+- **Error Handling:**
+    - Throw `UnsupportedMathOperationException` with a clear message ("Please set a numeric value!") for invalid inputs.
 
-3. **`POST /person`**
-    - **Method:** `create(Person person)`
-    - **Purpose:** Add a new `Person` record to the system.
-    - **Consumes:** `application/json`
-    - **Produces:** `application/json`
-    - **Mapped Annotation:**
-      `@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)`
-
-4. **`PUT /person`**
-    - **Method:** `update(Person person)`
-    - **Purpose:** Update an existing `Person` record.
-    - **Consumes:** `application/json`
-    - **Produces:** `application/json`
-    - **Mapped Annotation:**
-      `@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)`
-
-5. **`DELETE /person/{id}`**
-    - **Method:** `delete(String id)`
-    - **Purpose:** Remove a `Person` record by its identifier.
-    - **Consumes:** None
-    - **Produces:** None
-    - **Mapped Annotation:** `@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)`
-
-## **Dependency Injection**
-
-- Autowire an instance of `PersonService` to delegate business logic.
-
-## **HTTP Media Types**
-
-- Handle both input and output data using `application/json` media type.
-
-## **RESTful Conventions**
-
-- Use appropriate HTTP status codes for each operation to ensure compliance with RESTful standards.
+- **Method Return Type:**
+    - Return the result of each operation as a `Double`.
 
 ---
+
+## Requirements for `SimpleMath` Class:
+
+- **Mathematical Operations:**
+    - Implement methods to perform common mathematical calculations:
+        - `sum(Double numberOne, Double numberTwo)`: Returns the sum of two numbers.
+        - `subtraction(Double numberOne, Double numberTwo)`: Returns the difference between two numbers.
+        - `multiplication(Double numberOne, Double numberTwo)`: Returns the product of two numbers.
+        - `division(Double numberOne, Double numberTwo)`: Returns the quotient of two numbers.
+        - `mean(Double numberOne, Double numberTwo)`: Returns the arithmetic mean of two numbers.
+        - `squareRoot(Double number)`: Returns the square root of a number.
+
+- **Parameter Types:**
+    - Accept `Double` as the parameter type for all methods to handle decimal calculations.
+
+- **Return Type:**
+    - Ensure all methods return a `Double` value.
+
+- **Usage of Built-In Methods:**
+    - Leverage `Math.sqrt(number)` for computing square roots.
+
+---
+
+## Requirements for `NumberConverter` Class:
+
+- **Conversion Method:**
+    - **Method Name:** `convertToDouble(String strNumber)`.
+    - **Functionality:**
+        - Accepts a `String` parameter to convert numeric text into a `Double`.
+        - Replace commas with dots (`","` to `"."`) for proper decimal formatting.
+        - Validates that the input string is neither `null` nor empty; throws `UnsupportedMathOperationException` with
+          the message `"Please set a numeric value!"` for invalid input.
+
+- **Validation Method:**
+    - **Method Name:** `isNumeric(String strNumber)`.
+    - **Functionality:**
+        - Accepts a `String` parameter to check if it contains a valid numeric value.
+        - Replace commas with dots (`","` to `"."`) for decimal formatting.
+        - Returns `true` if the input matches the numeric pattern `[-+]?[0-9]*\\.?[0-9]+`, otherwise returns `false`.
+        - Treats `null` or empty inputs as non-numeric.
+
+- **Error Handling:**
+    - Throw `UnsupportedMathOperationException` with a descriptive message for invalid conversion attempts.
+
+- **Parameter Types:**
+    - Accept `String` as the parameter type for both methods.
+
+- **Return Types:**
+    - For `convertToDouble`: Returns the converted value as `Double`.
+    - For `isNumeric`: Returns a `boolean` indicating whether the input is numeric.
+
+- **Decimal Compatibility:**
+    - Ensure support for both `R$` (Brazilian format) and `USD` (international format) by replacing localized
+      delimiters.
+
+---
+
 
 ## Requirements for Exception Handling Classes:
 
@@ -234,8 +195,7 @@
     - Extend the `RuntimeException` class to create a custom exception.
 
 - **Annotation:**
-    - Annotate the class with `@ResponseStatus(HttpStatus.BAD_REQUEST)` to set the HTTP response status to `BAD_REQUEST`
-      for this exception.
+    - Annotate the class with `@ResponseStatus(HttpStatus.BAD_REQUEST)` to set the HTTP response status to `BAD_REQUEST` for this exception.
 
 - **Constructor:**
     - Define a constructor that accepts a `String message` to initialise the exception message.
