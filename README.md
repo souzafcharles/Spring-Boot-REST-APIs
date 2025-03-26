@@ -16,6 +16,7 @@
 | ☕ Java           | `21`       | Backend programming language                       |
 | 🌱 Spring Boot    | `3.4.4`    | Framework for creating Spring applications         |
 | 🐦 Maven          | `3.9.9`    | Build automation and dependency management tool    |
+| 🐬 MySQL          | `9.2.0`  | Open-source relational database management system     |
 
 ---
 
@@ -24,13 +25,15 @@
 |-------------------------|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------|
 | 🛠️ Spring Boot DevTools | Developer Tools | Provides fast application restarts, LiveReload, and configurations for enhanced development experience                                       |
 | 🌐 Spring Web           | Web             | Build web, including RESTful, applications using Spring MVC. Uses Apache Tomcat as the default embedded container                            |
-
+| 💾 Spring Data JPA      | SQL             | Simplifies database interactions using JPA with Spring Data and Hibernate                                                                    |
+| 🐘 MySQL Driver         | SQL             | Provides connectivity between Java applications and MySQL databases                                                                          |
+| 🗝️ dotenv-java          | Configuration   | Loads environment variables from a `.env` file, aiding secure configuration management                                                       |
 ---
 
 # Development Sections:
 - [X] Section 01: [First Steps in Spring Boot with Java 21](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_04/restapi)
-- [X] Section 02: Understanding Path Params and Exception Handling in Spring Boot
-- [ ] Section 03: How to Use HTTP Verbs in Spring Boot
+- [X] Section 02: [Understanding Path Params and Exception Handling in Spring Boot](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_05/restapi)
+- [X] Section 03: [How to Use HTTP Verbs in Spring Boot](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_06/restapi)
 - [ ] Section 04: Spring Data JPA and API Integration with MySQL
 - [ ] Section 05: Working with Logs in Spring Boot
 - [ ] Section 06: The DTO (Data Transfer Object) Design Pattern
