@@ -31,11 +31,11 @@
 ---
 
 # Development Sections:
-- [X] Section 01: [First Steps in Spring Boot with Java 21](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_04/restapi)
-- [X] Section 02: [Understanding Path Params and Exception Handling in Spring Boot](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_05/restapi)
-- [X] Section 03: [How to Use HTTP Verbs in Spring Boot](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_06/restapi)
-- [X] Section 04: [Spring Data JPA and API Integration with MySQL]https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_07/restapi)
-- [X] Section 05: Working with Logs in Spring Boot
+- [X] Section 01: [First Steps in Spring Boot with Java 21](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_01/restapi)
+- [X] Section 02: [Understanding Path Params and Exception Handling in Spring Boot](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_02/restapi)
+- [X] Section 03: [How to Use HTTP Verbs in Spring Boot](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_03/restapi)
+- [X] Section 04: [Spring Data JPA and API Integration with MySQL](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_04/restapi)
+- [X] Section 05: [Working with Logs in Spring Boot](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_05/restapi)
 - [ ] Section 06: The DTO (Data Transfer Object) Design Pattern
 - [ ] Section 07: API Versioning
 - [ ] Section 08: Adding Support for Migrations with Flyway
