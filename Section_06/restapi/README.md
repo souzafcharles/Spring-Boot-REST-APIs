@@ -8,8 +8,8 @@
     - Spring Boot Version: `3.4.4`.
     - Group ID: `com.github.souzafcharles`.
     - Artifact Name: `restapi`.
-    - Project URL: `https://github.com/souzafcharles/Spring-Boot-REST-APIs/Section04/restapi`.
-    - Project Description: `Section 04 project for Spring Boot`.
+    - Project URL: `https://github.com/souzafcharles/Spring-Boot-REST-APIs/Section06/restapi`.
+    - Project Description: `Section 06 project for Spring Boot`.
 
 - **Dependencies:**
     - **Spring Web**: For web application development.
