@@ -8,8 +8,8 @@
     - Spring Boot Version: `3.4.4`.
     - Group ID: `com.github.souzafcharles`.
     - Artifact Name: `restapi`.
-    - Project URL: `https://github.com/souzafcharles/Spring-Boot-REST-APIs/Section08/restapi`.
-    - Project Description: `Section 08 project for Spring Boot`.
+    - Project URL: `https://github.com/souzafcharles/Spring-Boot-REST-APIs/Section06/restapi`.
+    - Project Description: `Section 06 project for Spring Boot`.
 
 - **Dependencies:**
     - **Spring Web:**
@@ -199,7 +199,49 @@
 - Ensure meaningful JPA annotations for attributes to properly define database schema constraints.
 
 ---
+## Requirements for `PersonDTO` Class
 
+### Class Design
+
+- **Purpose:** The `PersonDTO` class is a Data Transfer Object designed to represent `Person` data in scenarios where entities are mapped to lightweight objects for external communication or processing.
+
+### Attributes
+
+- Define the following attributes:
+    - `id`: Represents the unique identifier for the `PersonDTO` object.
+    - `firstName`: Represents the first name of the person.
+    - `lastName`: Represents the last name of the person.
+    - `address`: Represents the address of the person.
+    - `gender`: Represents the gender of the person.
+
+### Constructors
+
+- Implement the following constructors:
+    - A no-argument constructor to satisfy JavaBeans conventions and allow object creation without initialisation.
+    - A parameterised constructor may be added for convenience if required (e.g., `public PersonDTO(Long id, String firstName, String lastName, String address, String gender)`).
+
+### Accessors and Mutators
+
+- Implement `getters` and `setters` for all attributes to allow controlled access and updates to object data:
+    - `public Long getId()` and `public void setId(Long id)`
+    - `public String getFirstName()` and `public void setFirstName(String firstName)`
+    - `public String getLastName()` and `public void setLastName(String lastName)`
+    - `public String getAddress()` and `public void setAddress(String address)`
+    - `public String getGender()` and `public void setGender(String gender)`
+
+### Serializable Interface
+
+- **Implement the Serializable Interface:**
+    - The `PersonDTO` class implements `Serializable` to facilitate object serialisation and deserialisation for scenarios such as network communication or file storage.
+
+### Documentation and Conventions
+
+- Follow best practices in naming conventions and ensure clarity in method definitions.
+- Include the serial version UID (`serialVersionUID`) for compatibility during serialisation and deserialisation:
+    - Example: `private static final long serialVersionUID = 1L;`.
+- Document the purpose and use of the class as part of the application's data transfer layer.
+
+---
 ## Requirements for `PersonRepository` Interface
 
 ### Interface Design
@@ -435,40 +477,35 @@
 
 ---
 
-## Requirements for `TestLogController` Class
+## Requirements for `ObjectMapper` Class
 
 ### Class Design
 
-- **Purpose:** The `TestLogController` class provides a REST API endpoint for testing logging functionality. It
-  demonstrates different log levels using SLF4J (Simple Logging Facade for Java).
+- **Purpose:** The `ObjectMapper` class is a utility designed to facilitate object mapping between different types using
+  the Dozer Mapper framework. It enables seamless transformation of objects and lists of objects.
 
 ### Attributes
 
-- **`logger`:**
-    - A `Logger` instance configured using `LoggerFactory.getLogger(TestLogController.class.getName())`.
-    - Used for writing logs at various levels (DEBUG, INFO, WARN, ERROR).
+- **`mapper`:**
+    - A static `Mapper` instance created using `DozerBeanMapperBuilder.buildDefault()`.
+    - Used to perform mappings between object types.
 
 ### Methods
 
-- **`testLog()` Method:**
-    - **Purpose:** Demonstrates the use of different logging levels.
-    - Annotated with `@GetMapping("/test")` to map the method to the `/test` endpoint.
-    - Logs messages at the following levels:
-        - `DEBUG`: *"This is an DEBUG log"*
-        - `INFO`: *"This is an INFO log"*
-        - `WARN`: *"This is an WARN log"*
-        - `ERROR`: *"This is an ERROR log"*
-    - Returns a `String` response: *"Logs generated successfully!"*.
+- **`parseObject(O origin, Class<D> destination)` Method:**
+    - **Purpose:** Maps an object of type `O` (origin) to type `D` (destination).
+    - Accepts:
+        - `origin`: The source object.
+        - `destination`: The class type of the target object.
+    - Returns:
+        - A mapped instance of type `D`.
 
-### Annotations
+- **`parseListObjects(List<O> origin, Class<D> destination)` Method:**
+    - **Purpose:** Maps a list of objects of type `O` (origin) to a list of objects of type `D` (destination).
+    - Accepts:
+        - `origin`: The source list of objects.
+        - `destination`: The class type of the target objects.
+    - Returns:
+        - A `List<D>` containing mapped objects.
 
-- **`@RestController`:**
-    - Marks the class as a Spring REST controller for handling HTTP requests.
-- **`@GetMapping("/test")`:**
-    - Maps the `/test` HTTP GET endpoint to the `testLog()` method.
-
-### Documentation and Conventions
-
-- Include clear documentation of the purpose and functionality of the class and method.
-- Adhere to Java naming conventions and Spring best practices for REST controllers and logging.
-- Ensure the logs generated are meaningful and appropriate for testing purposes.
+---

@@ -12,8 +12,8 @@
 	<artifactId>restapi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>restapi</name>
-	<description>Section 08 project for Spring Boot</description>
-	<url>https://github.com/souzafcharles/Spring-Boot-REST-APIs/Section08/restapi</url>
+	<description>Section 06 project for Spring Boot</description>
+	<url>https://github.com/souzafcharles/Spring-Boot-REST-APIs/Section06/restapi</url>
 	<licenses>
 		<license>
 			<name>MIT License</name>
@@ -58,6 +58,19 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.dozermapper</groupId>
+			<artifactId>dozer-core</artifactId>
+			<version>7.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

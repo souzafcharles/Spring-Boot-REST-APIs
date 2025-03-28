@@ -8,26 +8,34 @@
 
 ---
 
-## Backend Project Stack:
+## Backend Project Stack
 
-| Technology        | Version    | Description                                        |
-|-------------------|------------|----------------------------------------------------|
-| 📐 IntelliJ IDEA  | `2024.3`   | Integrated Development Environment (IDE)           |
-| ☕ Java           | `21`       | Backend programming language                       |
-| 🌱 Spring Boot    | `3.4.4`    | Framework for creating Spring applications         |
-| 🐦 Maven          | `3.9.9`    | Build automation and dependency management tool    |
-| 🐬 MySQL          | `9.2.0`  | Open-source relational database management system     |
+| Technology        | Version    | Description                                         |
+|-------------------|------------|-----------------------------------------------------|
+| 📐 IntelliJ IDEA  | `2024.3`   | Integrated Development Environment (IDE)            |
+| ☕ Java           | `21`       | Backend programming language                        |
+| 🌱 Spring Boot    | `3.4.4`    | Framework for creating Spring applications          |
+| 🐦 Maven          | `3.9.9`    | Build automation and dependency management tool     |
+| 🐬 MySQL          | `9.2.0`    | Open-source relational database management system   |
+| 🦅 Flyway         | `9.22`     | Database migration tool for version control         |
+| 📦 Dozer Mapper   | `7.0.0`    | Object mapping framework for seamless transformation|
 
 ---
 
-## Backend Dependencies:  
-| Dependency              | Category        | Description                                                                                                                                  |
-|-------------------------|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------|
-| 🛠️ Spring Boot DevTools | Developer Tools | Provides fast application restarts, LiveReload, and configurations for enhanced development experience                                       |
-| 🌐 Spring Web           | Web             | Build web, including RESTful, applications using Spring MVC. Uses Apache Tomcat as the default embedded container                            |
-| 💾 Spring Data JPA      | SQL             | Simplifies database interactions using JPA with Spring Data and Hibernate                                                                    |
-| 🐘 MySQL Driver         | SQL             | Provides connectivity between Java applications and MySQL databases                                                                          |
-| 🗝️ dotenv-java          | Configuration   | Loads environment variables from a `.env` file, aiding secure configuration management                                                       |
+## Backend Dependencies  
+
+| Dependency              | Category        | Description                                                                                                        |
+|-------------------------|-----------------|--------------------------------------------------------------------------------------------------------------------|
+| 🛠️ Spring Boot DevTools | Developer Tools | Provides fast application restarts, LiveReload, and configurations for enhanced development experience             |
+| 🌐 Spring Web           | Web             | Build web, including RESTful, applications using Spring MVC. Uses Apache Tomcat as the default embedded container  |
+| 💾 Spring Data JPA      | SQL             | Simplifies database interactions using JPA with Spring Data and Hibernate                                          |
+| 🐘 MySQL Driver         | SQL             | Provides connectivity between Java applications and MySQL databases                                                |
+| 🦅 Flyway Core          | Database        | Enables database migrations for version control                                                                    |
+| 🦅 Flyway MySQL         | Database        | Adds compatibility with MySQL for Flyway database migrations                                                       |
+| 🗝️ dotenv-java          | Configuration   | Loads environment variables from a `.env` file, aiding secure configuration management                             |
+| 📦 Dozer Core           | Object Mapping  | Provides object mapping functionality for transforming between different data types                                |
+| 🧪 Spring Boot Test     | Testing         | Supports writing unit and integration tests with built-in tools such as JUnit and Mockito                          |
+
 ---
 
 # Development Sections:
@@ -36,9 +44,9 @@
 - [X] Section 03: [How to Use HTTP Verbs in Spring Boot](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_03/restapi)
 - [X] Section 04: [Spring Data JPA and API Integration with MySQL](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_04/restapi)
 - [X] Section 05: [Working with Logs in Spring Boot](https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_05/restapi)
-- [ ] Section 06: The DTO (Data Transfer Object) Design Pattern
-- [ ] Section 07: API Versioning
-- [ ] Section 08: Adding Support for Migrations with Flyway
+- [X] Section 06: The DTO (Data Transfer Object) Design Pattern(https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_06/restapi)
+- [X] Section 07: API Versioning(https://github.com/souzafcharles/Spring-Boot-REST-APIs/tree/main/Section_06/restapi)
+- [X] Section 08: Adding Support for Migrations with Flyway
 - [ ] Section 09: Custom JSON Serialisation
 - [ ] Section 10: Content Negotiation
 - [ ] Section 11: Implementing HATEOAS
