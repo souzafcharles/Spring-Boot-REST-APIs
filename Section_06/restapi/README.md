@@ -12,48 +12,156 @@
     - Project Description: `Section 06 project for Spring Boot`.
 
 - **Dependencies:**
-    - **Spring Web**: For web application development.
-    - **Spring Boot Devtools**: For development-time support (runtime scope, optional).
+    - **Spring Web:**
+        - Add `spring-boot-starter-web` for web application development.
+    - **Spring Data JPA:**
+        - Include `spring-boot-starter-data-jpa` for working with data persistence using JPA.
+    - **Dotenv Java:**
+        - Incorporate `dotenv-java` (version `3.2.0`) for managing environment variables.
+    - **MySQL Connector:**
+        - Add `mysql-connector-j` as the database driver for MySQL (runtime scope).
+    - **Spring Boot Devtools:**
+        - Use `spring-boot-devtools` to provide development-time features (runtime scope, optional).
+    - **Spring Boot Starter Test:**
+        - Include `spring-boot-starter-test` for testing purposes.
+
+---
+
+## Requirements for `application.yml` Configuration File
+
+### Spring Application Configuration
+
+- Set the Spring application name to `restapi` using `spring.application.name`.
+
+### Datasource Configuration
+
+- Specify the database driver class name as `com.mysql.cj.jdbc.Driver` using `spring.datasource.driver-class-name`.
+- Configure the database URL using the placeholder `${DATASOURCE_URL}` with `spring.datasource.url`.
+- Set the database username using the placeholder `${DATASOURCE_USERNAME}` with `spring.datasource.username`.
+- Set the database password using the placeholder `${DATASOURCE_PASSWORD}` with `spring.datasource.password`.
+
+### JPA and Hibernate Configuration
+
+- Enable automatic schema updates by setting `spring.jpa.hibernate.ddl-auto` to `update`.
+- Configure Hibernate properties under `spring.jpa.properties.hibernate`:
+    - Disable SQL logging by setting `spring.jpa.show-sql` to `false`.
+- Disable Open Session in View by setting `spring.jpa.open-in-view` to `false`.
+
+### Logging Configuration
+
+- Define logging levels for specific packages:
+    - Set the logging level for `com.github.souzafcharles.restapi` to `DEBUG` using
+      `spring.logging.level.com.github.souzafcharles.restapi`.
+
+### Documentation and Conventions
+
+- Use placeholders (`${}`) for sensitive values such as database credentials to support environment-based configuration.
+- Ensure meaningful comments and documentation within the configuration file for clarity and maintainability.
+
+---
+
+## Creation of the `.env` File:
+
+- At the root of the project, create a file named `.env` to declare the environment variables required for the
+  `MySQL` database connection.
+
+---
+
+## Requirements for LoadEnvironment Class:
+
+- **Class Purpose:**
+
+    - Create the `LoadEnvironment` class to load environment variables from a `.env` file and set them as system
+      properties.
+
+- **Load Environment Method:**
+
+    - **Method:** `loadEnv`
+    - **Purpose:** Loads environment variables from a `.env` file and sets them as system properties.
+    - **Implementation Details:**
+        - Use the `Dotenv.configure().load()` method from the `io.github.cdimascio.dotenv` library to load the
+          environment variables.
+        - Iterate over the entries using
+          `dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()))` to set each
+          environment variable as a system property.
+
+- **External Library:**
+
+    - **Library:** `io.github.cdimascio.dotenv`
+    - **Purpose:** Used to load environment variables from a `.env` file. Ensure this library is included as a
+      dependency in your project's build configuration.
+
+- **Purpose:**
+    - Ensure that environment variables defined in a `.env` file are loaded and accessible as system properties
+      throughout the application.
 
 ---
 
 # Backend Requirements Specification:
 
-## Requirements for Spring Initializr Setup:
+## Requirements for `Startup` Class
 
-- **Spring Boot Application Configuration:**
-    - Annotate the `Startup` class with `@SpringBootApplication` to enable auto-configuration and component scanning.
+### Class Design
 
-- **Main Method:**
-    - Define the `main` method as the entry point of the application.
-    - Use `SpringApplication.run(Startup.class, args)` to launch the application context.
+- **Purpose:** The `Startup` class is the entry point for the application and is responsible for initialising and
+  running the Spring Boot application.
+
+### Methods
+
+- **`main(String[] args)` Method:**
+    - **Purpose:** Bootstraps the Spring Boot application.
+    - Invokes the `LoadEnvironment.loadEnv()` method to load environment-specific settings.
+    - Calls `SpringApplication.run()` with the `Startup` class and command-line arguments to start the application.
+
+### Annotations
+
+- **`@SpringBootApplication`:**
+    - Marks the class as the entry point for the Spring Boot framework.
+
+### Documentation and Conventions
+
+- Follow Java best practices for the `main()` method implementation and class documentation.
 
 ---
 
 ## Requirements for `Person` Entity Class
 
-### **Entity Class Design**
+### Entity Class Design
 
-- **Purpose:** The `Person` entity class is designed to represent personal data and is serializable for use in a
-  distributed system context.
+- **Purpose:** The `Person` entity class is designed to represent personal data for persistence in a relational
+  database. It is serializable and annotated with JPA for object-relational mapping.
 
-### **Attributes and Annotations**
+### Attributes and Annotations
 
 - Define the following attributes:
-    - `id`: Represents the unique identifier for the `Person` entity.
-    - `firstName`: Represents the first name of the person.
-    - `lastName`: Represents the last name of the person.
-    - `address`: Represents the address of the person.
-    - `gender`: Represents the gender of the person.
+    - **`id`:**
+        - Represents the unique identifier for the `Person` entity.
+        - Annotated with `@Id` to mark it as the primary key.
+        - Annotated with `@GeneratedValue(strategy = GenerationType.IDENTITY)` to enable auto-generation.
+    - **`firstName`:**
+        - Represents the first name of the person.
+        - Annotated with `@Column(name = "first_name", nullable = false, length = 80)` to define database column
+          properties.
+    - **`lastName`:**
+        - Represents the last name of the person.
+        - Annotated with `@Column(name = "last_name", nullable = false, length = 80)` to define database column
+          properties.
+    - **`address`:**
+        - Represents the address of the person.
+        - Annotated with `@Column(nullable = false, length = 100)` to define database column properties.
+    - **`gender`:**
+        - Represents the gender of the person.
+        - Annotated with `@Column(nullable = false, length = 6)` to define database column properties.
 
-### **Constructors**
+### Constructors
 
 - Implement the following constructors:
-    - A **no-argument constructor** to satisfy the requirements for JavaBeans.
+    - A no-argument constructor to satisfy the requirements for JavaBeans.
     - A parameterised constructor may be added for convenience (e.g.,
-      `public Person(Long id, String firstName, String lastName)`), though it is not required.
+      `public Person(Long id, String firstName, String lastName, String address, String gender)`), though it is not
+      required.
 
-### **Accessors and Mutators**
+### Accessors and Mutators
 
 - Implement `getters` and `setters` for all attributes to allow controlled access and updates to entity data:
     - `public Long getId()` and `public void setId(Long id)`
@@ -62,7 +170,7 @@
     - `public String getAddress()` and `public void setAddress(String address)`
     - `public String getGender()` and `public void setGender(String gender)`
 
-### **Equals and HashCode**
+### Equals and HashCode
 
 - **`equals()` Method:**
     - Override the `equals()` method to compare instances of the `Person` class based on the `id` attribute:
@@ -71,196 +179,333 @@
     - Override the `hashCode()` method to generate a hash code for a `Person` object using the `id` attribute:
         - Example: `return Objects.hashCode(id);`
 
-### **Serializable Interface**
+### JPA Annotations
+
+- **`@Entity`:**
+    - Marks the class as a JPA entity to map it to a database table.
+- **`@Table(name = "tb_person")`:**
+    - Specifies the name of the database table as `tb_person`.
+
+### Serializable Interface
 
 - **Implement the Serializable Interface:**
     - The `Person` class implements `Serializable` to support object serialisation for scenarios such as transferring
       objects between systems.
 
-### **Documentation and Convention**
+### Documentation and Conventions
 
 - Follow best practices in naming conventions, and ensure that the serial version UID (`serialVersionUID`) is included:
     - Example: `private static final long serialVersionUID = 1L;`
+- Ensure meaningful JPA annotations for attributes to properly define database schema constraints.
+
+---
+## Requirements for `PersonDTO` Class
+
+### Class Design
+
+- **Purpose:** The `PersonDTO` class is a Data Transfer Object designed to represent `Person` data in scenarios where entities are mapped to lightweight objects for external communication or processing.
+
+### Attributes
+
+- Define the following attributes:
+    - `id`: Represents the unique identifier for the `PersonDTO` object.
+    - `firstName`: Represents the first name of the person.
+    - `lastName`: Represents the last name of the person.
+    - `address`: Represents the address of the person.
+    - `gender`: Represents the gender of the person.
+
+### Constructors
+
+- Implement the following constructors:
+    - A no-argument constructor to satisfy JavaBeans conventions and allow object creation without initialisation.
+    - A parameterised constructor may be added for convenience if required (e.g., `public PersonDTO(Long id, String firstName, String lastName, String address, String gender)`).
+
+### Accessors and Mutators
+
+- Implement `getters` and `setters` for all attributes to allow controlled access and updates to object data:
+    - `public Long getId()` and `public void setId(Long id)`
+    - `public String getFirstName()` and `public void setFirstName(String firstName)`
+    - `public String getLastName()` and `public void setLastName(String lastName)`
+    - `public String getAddress()` and `public void setAddress(String address)`
+    - `public String getGender()` and `public void setGender(String gender)`
+
+### Serializable Interface
+
+- **Implement the Serializable Interface:**
+    - The `PersonDTO` class implements `Serializable` to facilitate object serialisation and deserialisation for scenarios such as network communication or file storage.
+
+### Documentation and Conventions
+
+- Follow best practices in naming conventions and ensure clarity in method definitions.
+- Include the serial version UID (`serialVersionUID`) for compatibility during serialisation and deserialisation:
+    - Example: `private static final long serialVersionUID = 1L;`.
+- Document the purpose and use of the class as part of the application's data transfer layer.
+
+---
+## Requirements for `PersonRepository` Interface
+
+### Interface Design
+
+- **Purpose:** The `PersonRepository` interface provides database access functionality for the `Person` entity. It
+  extends `JpaRepository` to leverage Spring Data JPA features.
+
+### Superclass
+
+- **Extends `JpaRepository`:**
+    - Allows the interface to inherit methods for performing CRUD operations, paging, and sorting on `Person` entities.
+
+### Methods
+
+- By extending `JpaRepository`, the following methods are available:
+    - **CRUD Methods:**
+        - `List<Person> findAll()` – Retrieves all `Person` records.
+        - `Optional<Person> findById(Long id)` – Retrieves a `Person` record by its unique ID.
+        - `Person save(Person person)` – Saves or updates a `Person` entity.
+        - `void deleteById(Long id)` – Deletes a `Person` record by its unique ID.
+
+- Additional methods can be added if custom query requirements arise, leveraging Spring Data JPA's query derivation
+  feature (e.g., `List<Person> findByLastName(String lastName)`).
+
+### Annotations
+
+- **`@Repository`:**
+    - The `PersonRepository` does not explicitly require this annotation as it is automatically recognised by Spring
+      Boot, but it may be added for clarity and convention.
+
+### Documentation and Conventions
+
+- Adhere to Spring Data JPA conventions and naming standards for method declarations.
+- Ensure that any custom methods are well-documented with meaningful comments describing their purpose.
 
 ---
 
 ## Requirements for `PersonService` Class
 
-### **Purpose**
+### Entity Class Design
 
-- The `PersonService` class is a service layer component designed to encapsulate the business logic for managing
-  `Person` entities. It facilitates the retrieval, creation, updating, and deletion of `Person` records.
+- **Purpose:** The `PersonService` class provides the business logic layer for managing `Person` entities. It interacts
+  with the repository to perform CRUD operations and ensures data integrity.
 
-### **Service Layer Responsibilities**
+### Attributes and Dependencies
 
-- Serve as an intermediary between the controller layer and data layer.
-- Implement methods to manage and manipulate `Person` data.
+- Define the following attributes:
+    - `counter`: An `AtomicLong` instance for managing unique counters (not currently used in methods, but provided for
+      scalability).
+    - `logger`: A `Logger` instance for logging operations and activity.
+    - `repository`: An instance of `PersonRepository`, auto-wired to interact with the database.
 
-### **Attributes**
+### Methods
 
-- `AtomicLong counter`: Used for generating unique IDs for `Person` instances in the absence of a persistent database.
-- `Logger logger`: Utilised for logging actions performed by the service.
+- Implement the following methods:
 
-### **Methods**
+    - **`findAll()` Method:**
+        - **Purpose:** Retrieves all `Person` entities from the repository.
+        - Logs the operation with a message: *"Finding all People!"*
+        - Returns a `List<Person>` containing all records.
 
-1. **`findAll()`**
-    - **Purpose:** Retrieve a list of all `Person` records.
-    - **Return Type:** `List<Person>`
-    - **Implementation:** Create mock `Person` objects for demonstration purposes.
+    - **`findById(Long id)` Method:**
+        - **Purpose:** Retrieves a `Person` entity by its unique ID.
+        - Logs the operation with a message: *"Finding one Person!"*
+        - Returns a `Person` object if found, otherwise throws a `ResourceNotFoundException`.
 
-2. **`findById(String id)`**
-    - **Purpose:** Retrieve a single `Person` record by its identifier.
-    - **Return Type:** `Person`
-    - **Implementation:** Create and return a mock `Person` object.
+    - **`create(Person person)` Method:**
+        - **Purpose:** Adds a new `Person` entity to the repository.
+        - Logs the operation with a message: *"Creating one Person!"*
+        - Returns the saved `Person` object.
 
-3. **`create(Person person)`**
-    - **Purpose:** Add a new `Person` record to the system.
-    - **Return Type:** `Person`
-    - **Implementation:** Log the action and return the received `Person` instance.
+    - **`update(Person person)` Method:**
+        - **Purpose:** Updates an existing `Person` entity.
+        - Logs the operation with a message: *"Updating one Person!"*
+        - Validates the `id` of the input `Person` object and ensures the entity exists in the repository.
+        - Updates all fields (`firstName`, `lastName`, `address`, and `gender`).
+        - Returns the updated `Person` object.
 
-4. **`update(Person person)`**
-    - **Purpose:** Update an existing `Person` record.
-    - **Return Type:** `Person`
-    - **Implementation:** Log the action and return the updated `Person` instance.
+    - **`delete(Long id)` Method:**
+        - **Purpose:** Deletes a `Person` entity by its unique ID.
+        - Logs the operation with a message: *"Deleting one Person!"*
+        - Validates the ID and ensures the entity exists, otherwise throws a `ResourceNotFoundException`.
 
-5. **`delete(String id)`**
-    - **Purpose:** Remove a `Person` record by its identifier.
-    - **Return Type:** `void`
-    - **Implementation:** Log the deletion operation.
+### Logging
 
-6. **`mockPerson(int i)` (Private Helper Method)**
-    - **Purpose:** Generate mock `Person` instances for testing or demonstration purposes.
-    - **Return Type:** `Person`
-    - **Implementation:** Populate and return a `Person` object with predefined attributes.
+- Use the `Logger` instance to log meaningful information for all operations (`findAll`, `findById`, `create`, `update`,
+  `delete`).
 
-### **Logging**
+### Documentation and Conventions
 
-- Use the `Logger` instance to log all operations performed by the service for debugging and monitoring purposes.
+- Follow best practices in method naming, class design, and dependency injection.
+- Ensure meaningful exception messages in `ResourceNotFoundException` to assist with debugging.
 
 ---
 
 ## Requirements for `PersonController` Class
 
-### **Purpose**
+### Class Design
 
-- The `PersonController` class is a REST controller responsible for handling HTTP requests related to `Person` entities.
-  It provides endpoints for CRUD operations.
+- **Purpose:** The `PersonController` class provides a RESTful API for managing `Person` entities. It delegates the
+  business logic to the `PersonService` class.
 
-### **Controller Layer Responsibilities**
+### Endpoints
 
-- Map incoming HTTP requests to appropriate service layer methods.
-- Handle RESTful operations for managing `Person` data.
+- Define the following endpoints:
 
-### **Annotations**
+    - **GET `/person` Endpoint:**
+        - **Purpose:** Fetches all `Person` entities.
+        - **Produces:** `application/json`
+        - Returns a `List<Person>`.
 
-- Annotate the class with `@RestController` to define it as a RESTful web service.
-- Use `@RequestMapping("/person")` at the class level to map requests to the base URL `/person`.
+    - **GET `/person/{id}` Endpoint:**
+        - **Purpose:** Fetches a `Person` entity by its unique ID.
+        - **Produces:** `application/json`
+        - Returns a `Person` object.
 
-### **Endpoints**
+    - **POST `/person` Endpoint:**
+        - **Purpose:** Adds a new `Person` entity.
+        - **Consumes/Produces:** `application/json`
+        - Returns the saved `Person` object.
 
-1. **`GET /person`**
-    - **Method:** `findAll()`
-    - **Purpose:** Retrieve a list of all `Person` records.
-    - **Consumes:** None
-    - **Produces:** `application/json`
-    - **Mapped Annotation:** `@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)`
+    - **PUT `/person` Endpoint:**
+        - **Purpose:** Updates an existing `Person` entity.
+        - **Consumes/Produces:** `application/json`
+        - Returns the updated `Person` object.
 
-2. **`GET /person/{id}`**
-    - **Method:** `findById(String id)`
-    - **Purpose:** Retrieve a single `Person` record by its identifier.
-    - **Consumes:** None
-    - **Produces:** `application/json`
-    - **Mapped Annotation:**
-      `@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)`
+    - **DELETE `/person/{id}` Endpoint:**
+        - **Purpose:** Deletes a `Person` entity by its unique ID.
+        - **Returns:** HTTP 204 No Content.
 
-3. **`POST /person`**
-    - **Method:** `create(Person person)`
-    - **Purpose:** Add a new `Person` record to the system.
-    - **Consumes:** `application/json`
-    - **Produces:** `application/json`
-    - **Mapped Annotation:**
-      `@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)`
+### Annotations
 
-4. **`PUT /person`**
-    - **Method:** `update(Person person)`
-    - **Purpose:** Update an existing `Person` record.
-    - **Consumes:** `application/json`
-    - **Produces:** `application/json`
-    - **Mapped Annotation:**
-      `@RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)`
+- Use Spring annotations for dependency injection and RESTful API specifications:
+    - `@RestController` for marking the class as a REST controller.
+    - `@RequestMapping("/person")` for base URL mapping.
+    - `@Autowired` for injecting the `PersonService`.
 
-5. **`DELETE /person/{id}`**
-    - **Method:** `delete(String id)`
-    - **Purpose:** Remove a `Person` record by its identifier.
-    - **Consumes:** None
-    - **Produces:** None
-    - **Mapped Annotation:** `@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)`
+### Validation and Error Handling
 
-### **Dependency Injection**
+- Ensure meaningful exception handling:
+    - Return appropriate HTTP status codes for each operation.
+    - Throw `ResourceNotFoundException` when applicable.
+    - Validate `@PathVariable` and `@RequestBody` input.
 
-- Autowire an instance of `PersonService` to delegate business logic.
+### Documentation and Conventions
 
-### **HTTP Media Types**
-
-- Handle both input and output data using `application/json` media type.
-
-### **RESTful Conventions**
-
-- Use appropriate HTTP status codes for each operation to ensure compliance with RESTful standards.
+- Ensure all endpoints are well-documented with meaningful comments for clarity.
+- Adhere to RESTful API best practices, such as HTTP methods and status codes.
 
 ---
 
-## Requirements for Exception Handling Classes:
+## Requirements for `ExceptionResponse` Record
 
-### Requirements for `ExceptionResponse` Record:
+### Design
 
-- **Record Definition:**
-    - Define the `ExceptionResponse` class as a `record` to encapsulate immutable error details.
+- **Purpose:** The `ExceptionResponse` record is designed to encapsulate exception details in a structured format for
+  response handling.
 
-- **Attributes:**
-    - Include the following attributes with appropriate types:
-        - `timestamp`: A `Date` object to log the time of the error.
-        - `message`: A `String` to store the error message.
-        - `details`: A `String` to include specific details about the error.
+### Attributes
 
-- **Automatic Methods:**
-    - Leverage the `record` feature to generate automatic getters for attributes.
+- Define the following attributes:
+    - `timestamp`: Captures the date and time of the exception occurrence.
+    - `message`: Describes the exception message.
+    - `details`: Provides additional details about the exception, typically the request description.
 
----
+### Documentation and Conventions
 
-### Requirements for `UnsupportedMathOperationException` Class:
-
-- **Custom Exception Implementation:**
-    - Extend the `RuntimeException` class to create a custom exception.
-
-- **Annotation:**
-    - Annotate the class with `@ResponseStatus(HttpStatus.BAD_REQUEST)` to set the HTTP response status to `BAD_REQUEST`
-      for this exception.
-
-- **Constructor:**
-    - Define a constructor that accepts a `String message` to initialise the exception message.
+- Ensure all attributes are immutable and follow the record-specific conventions of Java.
+- Document the purpose and usage of this record in exception handling processes.
 
 ---
 
-### Requirements for `CustomEntityResponseHandler` Class:
+## Requirements for `ResourceNotFoundException` Class
 
-- **Controller Advice Definition:**
-    - Annotate the class with `@ControllerAdvice` to enable centralised exception handling across controllers.
-    - Use `@RestController` for RESTful handling.
+### Class Design
 
-- **Method for Generic Exceptions:**
-    - **Method Name:** `handleAllExceptions(Exception e, WebRequest request)`.
-    - **Functionality:**
-        - Handle generic exceptions.
-        - Create an `ExceptionResponse` instance with a timestamp, error message, and request details.
-        - Return a `ResponseEntity` with the `ExceptionResponse` and HTTP status `INTERNAL_SERVER_ERROR`.
+- **Purpose:** The `ResourceNotFoundException` class is a custom exception used to indicate that a requested resource
+  could not be found.
 
-- **Method for `UnsupportedMathOperationException`:**
-    - **Method Name:** `handleBadRequestExceptions(Exception e, WebRequest request)`.
-    - **Functionality:**
-        - Handle exceptions of type `UnsupportedMathOperationException`.
-        - Create an `ExceptionResponse` instance with a timestamp, error message, and request details.
-        - Return a `ResponseEntity` with the `ExceptionResponse` and HTTP status `BAD_REQUEST`.
+### Constructor
 
-- **Attributes and Return Types:**
-    - Include proper error handling and informative responses to aid debugging.
+- **`ResourceNotFoundException(String message)` Constructor:**
+    - Accepts a `String` argument to specify the exception message.
+    - Passes the message to the superclass constructor (`RuntimeException`).
+
+### Annotations
+
+- **`@ResponseStatus(HttpStatus.BAD_REQUEST)`**
+    - Marks the exception with the `BAD_REQUEST` HTTP status, indicating a client error.
+
+### Documentation and Conventions
+
+- Include a clear description of the use case for this exception.
+- Adhere to Java naming conventions for custom exceptions.
+
+---
+
+## Requirements for `CustomEntityResponseHandler` Class
+
+### Class Design
+
+- **Purpose:** The `CustomEntityResponseHandler` class is designed to provide a centralised exception handling mechanism
+  for the application by extending `ResponseEntityExceptionHandler`.
+
+### Annotations
+
+- **`@ControllerAdvice`:**
+    - Marks the class as a global exception handler.
+- **`@RestController`:**
+    - Combines with `@ControllerAdvice` to allow the class to return JSON responses.
+
+### Methods
+
+- **`handleAllExceptions(Exception ex, WebRequest request)` Method:**
+    - **Purpose:** Handles generic exceptions not explicitly handled elsewhere.
+    - Creates an `ExceptionResponse` object containing:
+        - `timestamp`: The current date and time.
+        - `message`: The exception message.
+        - `details`: The request description.
+    - Returns a `ResponseEntity` with the `ExceptionResponse` object and `HttpStatus.INTERNAL_SERVER_ERROR`.
+
+- **`handleNotFoundExceptions(ResourceNotFoundException ex, WebRequest request)` Method:**
+    - **Purpose:** Handles `ResourceNotFoundException` specifically.
+    - Creates an `ExceptionResponse` object similar to `handleAllExceptions`.
+    - Returns a `ResponseEntity` with the `ExceptionResponse` object and `HttpStatus.NOT_FOUND`.
+
+### Documentation and Conventions
+
+- Document the purpose and usage of each handler method.
+- Ensure meaningful and user-friendly exception messages.
+- Adhere to best practices in exception handling, such as returning appropriate HTTP status codes and maintaining
+  detailed logging where necessary.
+
+---
+
+## Requirements for `ObjectMapper` Class
+
+### Class Design
+
+- **Purpose:** The `ObjectMapper` class is a utility designed to facilitate object mapping between different types using
+  the Dozer Mapper framework. It enables seamless transformation of objects and lists of objects.
+
+### Attributes
+
+- **`mapper`:**
+    - A static `Mapper` instance created using `DozerBeanMapperBuilder.buildDefault()`.
+    - Used to perform mappings between object types.
+
+### Methods
+
+- **`parseObject(O origin, Class<D> destination)` Method:**
+    - **Purpose:** Maps an object of type `O` (origin) to type `D` (destination).
+    - Accepts:
+        - `origin`: The source object.
+        - `destination`: The class type of the target object.
+    - Returns:
+        - A mapped instance of type `D`.
+
+- **`parseListObjects(List<O> origin, Class<D> destination)` Method:**
+    - **Purpose:** Maps a list of objects of type `O` (origin) to a list of objects of type `D` (destination).
+    - Accepts:
+        - `origin`: The source list of objects.
+        - `destination`: The class type of the target objects.
+    - Returns:
+        - A `List<D>` containing mapped objects.
+
+---

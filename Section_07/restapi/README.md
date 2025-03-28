@@ -27,22 +27,36 @@
 
 ---
 
-## Requirements for `application.yml` Configuration File:
+## Requirements for `application.yml` Configuration File
 
-- **Spring Application Configuration:**
-    - Set the Spring application name to `restapi` using `spring.application.name`.
+### Spring Application Configuration
 
-- **Datasource Configuration:**
-    - Specify the database driver class name as `com.mysql.cj.jdbc.Driver` using `spring.datasource.driver-class-name`.
-    - Configure the database URL using the placeholder `${DATASOURCE_URL}` using `spring.datasource.url`.
-    - Configure the database username using the placeholder `${DATASOURCE_USERNAME}` using `spring.datasource.username`.
-    - Configure the database password using the placeholder `${DATASOURCE_PASSWORD}` using `spring.datasource.password`.
+- Set the Spring application name to `restapi` using `spring.application.name`.
 
-- **JPA and Hibernate Configuration:**
-    - Enable automatic schema updates by setting `spring.jpa.hibernate.ddl-auto` to `update`.
-    - Configure Hibernate properties under `spring.jpa.properties.hibernate`:
-        - Disable SQL logging by setting `show-sql` to `false`.
-    - Disable Open Session in View by setting `spring.jpa.open-in-view` to `false`.
+### Datasource Configuration
+
+- Specify the database driver class name as `com.mysql.cj.jdbc.Driver` using `spring.datasource.driver-class-name`.
+- Configure the database URL using the placeholder `${DATASOURCE_URL}` with `spring.datasource.url`.
+- Set the database username using the placeholder `${DATASOURCE_USERNAME}` with `spring.datasource.username`.
+- Set the database password using the placeholder `${DATASOURCE_PASSWORD}` with `spring.datasource.password`.
+
+### JPA and Hibernate Configuration
+
+- Enable automatic schema updates by setting `spring.jpa.hibernate.ddl-auto` to `update`.
+- Configure Hibernate properties under `spring.jpa.properties.hibernate`:
+    - Disable SQL logging by setting `spring.jpa.show-sql` to `false`.
+- Disable Open Session in View by setting `spring.jpa.open-in-view` to `false`.
+
+### Logging Configuration
+
+- Define logging levels for specific packages:
+    - Set the logging level for `com.github.souzafcharles.restapi` to `DEBUG` using
+      `spring.logging.level.com.github.souzafcharles.restapi`.
+
+### Documentation and Conventions
+
+- Use placeholders (`${}`) for sensitive values such as database credentials to support environment-based configuration.
+- Ensure meaningful comments and documentation within the configuration file for clarity and maintainability.
 
 ---
 
@@ -114,7 +128,8 @@
 
 ### Entity Class Design
 
-- **Purpose:** The `Person` entity class is designed to represent personal data for persistence in a relational database. It is serializable and annotated with JPA for object-relational mapping.
+- **Purpose:** The `Person` entity class is designed to represent personal data for persistence in a relational
+  database. It is serializable and annotated with JPA for object-relational mapping.
 
 ### Attributes and Annotations
 
@@ -125,10 +140,12 @@
         - Annotated with `@GeneratedValue(strategy = GenerationType.IDENTITY)` to enable auto-generation.
     - **`firstName`:**
         - Represents the first name of the person.
-        - Annotated with `@Column(name = "first_name", nullable = false, length = 80)` to define database column properties.
+        - Annotated with `@Column(name = "first_name", nullable = false, length = 80)` to define database column
+          properties.
     - **`lastName`:**
         - Represents the last name of the person.
-        - Annotated with `@Column(name = "last_name", nullable = false, length = 80)` to define database column properties.
+        - Annotated with `@Column(name = "last_name", nullable = false, length = 80)` to define database column
+          properties.
     - **`address`:**
         - Represents the address of the person.
         - Annotated with `@Column(nullable = false, length = 100)` to define database column properties.
@@ -140,7 +157,9 @@
 
 - Implement the following constructors:
     - A no-argument constructor to satisfy the requirements for JavaBeans.
-    - A parameterised constructor may be added for convenience (e.g., `public Person(Long id, String firstName, String lastName, String address, String gender)`), though it is not required.
+    - A parameterised constructor may be added for convenience (e.g.,
+      `public Person(Long id, String firstName, String lastName, String address, String gender)`), though it is not
+      required.
 
 ### Accessors and Mutators
 
@@ -170,13 +189,61 @@
 ### Serializable Interface
 
 - **Implement the Serializable Interface:**
-    - The `Person` class implements `Serializable` to support object serialisation for scenarios such as transferring objects between systems.
+    - The `Person` class implements `Serializable` to support object serialisation for scenarios such as transferring
+      objects between systems.
 
 ### Documentation and Conventions
 
 - Follow best practices in naming conventions, and ensure that the serial version UID (`serialVersionUID`) is included:
     - Example: `private static final long serialVersionUID = 1L;`
 - Ensure meaningful JPA annotations for attributes to properly define database schema constraints.
+
+---
+
+## Requirements for `PersonDTO` Class
+
+### Class Design
+
+- **Purpose:** The `PersonDTO` class is a Data Transfer Object designed to represent `Person` data in scenarios where
+  entities are mapped to lightweight objects for external communication or processing.
+
+### Attributes
+
+- Define the following attributes:
+    - `id`: Represents the unique identifier for the `PersonDTO` object.
+    - `firstName`: Represents the first name of the person.
+    - `lastName`: Represents the last name of the person.
+    - `address`: Represents the address of the person.
+    - `gender`: Represents the gender of the person.
+
+### Constructors
+
+- Implement the following constructors:
+    - A no-argument constructor to satisfy JavaBeans conventions and allow object creation without initialisation.
+    - A parameterised constructor may be added for convenience if required (e.g.,
+      `public PersonDTO(Long id, String firstName, String lastName, String address, String gender)`).
+
+### Accessors and Mutators
+
+- Implement `getters` and `setters` for all attributes to allow controlled access and updates to object data:
+    - `public Long getId()` and `public void setId(Long id)`
+    - `public String getFirstName()` and `public void setFirstName(String firstName)`
+    - `public String getLastName()` and `public void setLastName(String lastName)`
+    - `public String getAddress()` and `public void setAddress(String address)`
+    - `public String getGender()` and `public void setGender(String gender)`
+
+### Serializable Interface
+
+- **Implement the Serializable Interface:**
+    - The `PersonDTO` class implements `Serializable` to facilitate object serialisation and deserialisation for
+      scenarios such as network communication or file storage.
+
+### Documentation and Conventions
+
+- Follow best practices in naming conventions and ensure clarity in method definitions.
+- Include the serial version UID (`serialVersionUID`) for compatibility during serialisation and deserialisation:
+    - Example: `private static final long serialVersionUID = 1L;`.
+- Document the purpose and use of the class as part of the application's data transfer layer.
 
 ---
 
@@ -412,3 +479,111 @@
 - Ensure meaningful and user-friendly exception messages.
 - Adhere to best practices in exception handling, such as returning appropriate HTTP status codes and maintaining
   detailed logging where necessary.
+
+---
+
+## Requirements for `ObjectMapper` Class
+
+### Class Design
+
+- **Purpose:** The `ObjectMapper` class is a utility designed to facilitate object mapping between different types using
+  the Dozer Mapper framework. It enables seamless transformation of objects and lists of objects.
+
+### Attributes
+
+- **`mapper`:**
+    - A static `Mapper` instance created using `DozerBeanMapperBuilder.buildDefault()`.
+    - Used to perform mappings between object types.
+
+### Methods
+
+- **`parseObject(O origin, Class<D> destination)` Method:**
+    - **Purpose:** Maps an object of type `O` (origin) to type `D` (destination).
+    - Accepts:
+        - `origin`: The source object.
+        - `destination`: The class type of the target object.
+    - Returns:
+        - A mapped instance of type `D`.
+
+- **`parseListObjects(List<O> origin, Class<D> destination)` Method:**
+    - **Purpose:** Maps a list of objects of type `O` (origin) to a list of objects of type `D` (destination).
+    - Accepts:
+        - `origin`: The source list of objects.
+        - `destination`: The class type of the target objects.
+    - Returns:
+        - A `List<D>` containing mapped objects.
+
+---
+
+## Requirements for `PersonDTOv2` Class
+
+### Class Design
+
+- **Purpose:** The `PersonDTOv2` class is designed as a Data Transfer Object (DTO) for transmitting personal information
+  between layers of the application. It is serialisable to support distributed system scenarios.
+
+### Attributes and Annotations
+
+- Define the following attributes:
+    - `id`: Represents the unique identifier for the `PersonDTOv2` object.
+    - `firstName`: Represents the first name of the person.
+    - `lastName`: Represents the last name of the person.
+    - `birthday`: Represents the date of birth of the person.
+    - `address`: Represents the address of the person.
+    - `gender`: Represents the gender of the person.
+
+### Constructors
+
+- Implement the following constructors:
+    - A no-argument constructor for satisfying JavaBean conventions.
+    - Additional parameterised constructors may be implemented for convenience, though they are not mandatory.
+
+### Accessors and Mutators
+
+- Implement `getters` and `setters` for all attributes to allow controlled access and updates:
+    - Example: `public Long getId()` and `public void setId(Long id)`.
+
+### Serializable Interface
+
+- **Implement the Serializable Interface:**
+    - The `PersonDTOv2` class implements `Serializable` to support object serialisation for scenarios such as remote
+      communication or file storage.
+    - Ensure that the serial version UID (`serialVersionUID`) is included:
+        - Example: `private static final long serialVersionUID = 1L;`.
+
+### Documentation and Conventions
+
+- Follow best practices in naming conventions and class documentation.
+- Ensure code readability and maintainability.
+
+---
+
+## Requirements for `PersonMapper` Class
+
+### Class Design
+
+- **Purpose:** The `PersonMapper` class provides custom methods to convert between `Person` entity objects and
+  `PersonDTOv2` objects, ensuring compatibility and proper data handling between layers of the application.
+
+### Methods
+
+- **`convertEntityToDTO(Person person)` Method:**
+    - **Purpose:** Converts a `Person` entity object into a `PersonDTOv2` object.
+    - Maps attributes from the `Person` object to the corresponding attributes in the `PersonDTOv2` object.
+    - Sets the `birthday` attribute to a new `Date` object, assuming current date as default (could be revised for
+      accuracy).
+
+- **`convertDTOtoEntity(PersonDTOv2 person)` Method:**
+    - **Purpose:** Converts a `PersonDTOv2` object into a `Person` entity object.
+    - Maps attributes from the `PersonDTOv2` object to the corresponding attributes in the `Person` entity object.
+    - The `birthday` attribute is commented out in this implementation for potential revision.
+
+### Annotations
+
+- **`@Service`:**
+    - Indicates that the class is a Spring-managed service and is part of the application's business logic layer.
+
+### Documentation and Conventions
+
+- Follow Java best practices for method implementation and class documentation.
+- Ensure code readability, maintainability, and adherence to standard naming conventions.
